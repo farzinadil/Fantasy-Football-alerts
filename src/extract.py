@@ -2,7 +2,7 @@ import json
 
 players = {"players": []}
 
-with open('data.json') as json_file:
+with open('public/data.json') as json_file:
     data = json.load(json_file)
 
     i = 0
@@ -11,5 +11,5 @@ with open('data.json') as json_file:
         players["players"].append(data['players'][i]['player_name'])
 
 
-with open('players.json', 'w') as output:
+with open('public/players.json', 'w') as output:
     json.dump(players, output)
