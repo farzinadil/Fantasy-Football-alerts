@@ -18,43 +18,11 @@ def bearer_oauth(r):
     return r
 
 
-def get_rules():
-    response = requests.get(
-        "https://api.twitter.com/2/tweets/search/stream/rules", auth=bearer_oauth
-    )
-    if response.status_code != 200:
-        raise Exception(
-            "Cannot get rules (HTTP {}): {}".format(
-                response.status_code, response.text)
-        )
-    print(json.dumps(response.json()))
-    return response.json()
-
-
-def delete_all_rules(rules):
-    if rules is None or "data" not in rules:
-        return None
-
-    ids = list(map(lambda rule: rule["id"], rules["data"]))
-    payload = {"delete": {"ids": ids}}
-    response = requests.post(
-        "https://api.twitter.com/2/tweets/search/stream/rules",
-        auth=bearer_oauth,
-        json=payload
-    )
-    if response.status_code != 200:
-        raise Exception(
-            "Cannot delete rules (HTTP {}): {}".format(
-                response.status_code, response.text
-            )
-        )
-    print(json.dumps(response.json()))
-
-
-def set_rules(delete):
+def set_rules():
     # You can adjust the rules if needed
     sample_rules = [
-        {"value": "from:44196397"}
+        # 44196397 is the twitter id of the Adam Shefter
+        {"value": "from:1358539990670536705"}
     ]
     payload = {"add": sample_rules}
     response = requests.post(
@@ -67,7 +35,6 @@ def set_rules(delete):
             "Cannot add rules (HTTP {}): {}".format(
                 response.status_code, response.text)
         )
-    print(json.dumps(response.json()))
 
 
 def get_stream(set):
@@ -85,18 +52,21 @@ def get_stream(set):
         if response_line:
             json_response = json.loads(response_line)
             tweet = json_response["data"]
-            tweet_content = tweet['text'].lower()
-            split_tweet_content = tweet_content.split()
+            tweet_content = tweet['text']
+            print(tweet_content)
+            with open("public/players.json") as players:
+                players = json.load(players)
+                for player in players["players"]:
+                    if player in tweet_content:
+                        print(player)
 
 
 def main():
-    rules = get_rules()
-    delete = delete_all_rules(rules)
-    set = set_rules(delete)
+    set = set_rules()
     while True:
         try:
             get_stream(set)
-        except KeyboardInterrupt:
+        except:
             print("something went wrong")
             time.sleep(60)
 
