@@ -28,7 +28,7 @@ def set_rules():
     sample_rules = [
         # 44196397 is the twitter id of the Adam Shefter
         # 36089053 is the twitter id of the Tom Pelissero
-        {"value": "from:44196397"}
+        {"value": "from:1358539990670536705"}
     ]
     payload = {"add": sample_rules}
     response = requests.post(
