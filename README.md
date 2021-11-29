@@ -1,6 +1,6 @@
 # Fantasy-Football-alerts
 
-![GitHub last commit](https://img.shields.io/github/last-commit/farzinadil/Fantasy-Football-alerts?style=plastic) https://img.shields.io/github/languages/top/farzinadil/Fantasy-Football-alerts?style=plastic
+![GitHub last commit](https://img.shields.io/github/last-commit/farzinadil/Fantasy-Football-alerts?style=plastic) ![GitHub top language](https://img.shields.io/github/languages/top/farzinadil/Fantasy-Football-alerts?style=plastic)
 
 ## About
 
