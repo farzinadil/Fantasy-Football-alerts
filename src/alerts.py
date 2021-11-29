@@ -2,12 +2,13 @@ import requests
 import os
 import json
 import time
+from twilio.rest import Client
 from dotenv import load_dotenv
 load_dotenv()
 
 bearer_token = os.getenv("BEARER_TOKEN")
 
-
+#Twitter filtered stream auth
 def bearer_oauth(r):
     """
     Method required by bearer token authentication.
@@ -17,7 +18,7 @@ def bearer_oauth(r):
     r.headers["User-Agent"] = "v2FilteredStreamPython"
     return r
 
-
+#Twitter filtered stream rules
 def set_rules():
     # You can adjust the rules if needed
     sample_rules = [
@@ -36,7 +37,7 @@ def set_rules():
                 response.status_code, response.text)
         )
 
-
+#Twitter filtered stream
 def get_stream(set):
     response = requests.get(
         "https://api.twitter.com/2/tweets/search/stream", auth=bearer_oauth, stream=True,
@@ -58,7 +59,24 @@ def get_stream(set):
                 players = json.load(players)
                 for player in players["players"]:
                     if player in tweet_content:
-                        print(player)
+                        sms(tweet_content)
+                        break
+
+
+
+# send sms with twilio client
+def sms(message):
+    account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+    client = Client(account_sid, auth_token)
+    phone_number = os.getenv("PHONE_NUMBER")
+    twilio_phone_number = os.getenv("TWILIO_PHONE_NUMBER")
+    client.messages.create(
+        body=message,
+        from_=twilio_phone_number,
+        to=phone_number
+    )
+    
 
 
 def main():
