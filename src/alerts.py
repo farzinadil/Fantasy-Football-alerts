@@ -8,7 +8,9 @@ load_dotenv()
 
 bearer_token = os.getenv("BEARER_TOKEN")
 
-#Twitter filtered stream auth
+# Twitter filtered stream auth
+
+
 def bearer_oauth(r):
     """
     Method required by bearer token authentication.
@@ -18,12 +20,15 @@ def bearer_oauth(r):
     r.headers["User-Agent"] = "v2FilteredStreamPython"
     return r
 
-#Twitter filtered stream rules
+# Twitter filtered stream rules
+
+
 def set_rules():
     # You can adjust the rules if needed
     sample_rules = [
         # 44196397 is the twitter id of the Adam Shefter
-        {"value": "from:1358539990670536705"}
+        # 36089053 is the twitter id of the Tom Pelissero
+        {"value": "from:44196397"}
     ]
     payload = {"add": sample_rules}
     response = requests.post(
@@ -37,7 +42,9 @@ def set_rules():
                 response.status_code, response.text)
         )
 
-#Twitter filtered stream
+# Twitter filtered stream
+
+
 def get_stream(set):
     response = requests.get(
         "https://api.twitter.com/2/tweets/search/stream", auth=bearer_oauth, stream=True,
@@ -63,7 +70,6 @@ def get_stream(set):
                         break
 
 
-
 # send sms with twilio client
 def sms(message):
     account_sid = os.getenv("TWILIO_ACCOUNT_SID")
@@ -76,7 +82,6 @@ def sms(message):
         from_=twilio_phone_number,
         to=phone_number
     )
-    
 
 
 def main():
